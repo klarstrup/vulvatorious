@@ -7,6 +7,7 @@ export default function Home() {
       <Image
         src={vulvaVLogo}
         alt=""
+        loading="eager"
         className="invert max-v-screen max-h-screen w-auto h-auto"
       />
     </div>

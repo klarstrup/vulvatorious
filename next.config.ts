@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  rewrites: () => [{ source: "/rider", destination: "/rider/index.html" }],
 };
 
 export default nextConfig;
