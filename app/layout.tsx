@@ -3,7 +3,7 @@ import { Averia_Libre } from "next/font/google";
 import BG from "../public/illustration_wo_squid.png";
 import "./globals.css";
 
-const averiaLibre = Averia_Libre({ weight: "400" });
+const averiaLibre = Averia_Libre({ weight: "400", display: "block" });
 
 export const metadata: Metadata = {
   title: "Vulvatorious",
