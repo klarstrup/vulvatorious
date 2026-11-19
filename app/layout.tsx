@@ -20,7 +20,7 @@ export default function RootLayout({
       <body
         className="min-h-full flex flex-col text-white bg-black p-10"
         style={{
-          backgroundImage: `url(${BG.src})`,
+          backgroundImage: `url(${BG.src}), url(${BG.blurDataURL})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
