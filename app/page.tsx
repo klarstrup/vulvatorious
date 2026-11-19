@@ -70,97 +70,98 @@ export default async function Home() {
           className="absolute inset-0"
         />
       </div>
-      <center
-        className="text-3xl my-[4vh] flex-col flex gap-4"
-        style={{
-          textShadow: "0 0 2.5vh rgba(0, 0, 0, 1), 0 0 2.5vw rgba(0, 0, 0, 1)",
-        }}
-      >
-        {nextShowsWithTicketLink.length
-          ? nextShowsWithTicketLink.map(([nextShow, ticketLink]) =>
-              nextShow ? (
-                <div key={nextShow.id} className="flex flex-col">
-                  <a target="_blank" href={nextShow.uri} className="text-6xl">
-                    <time
-                      title={`${nextShow.start.date}  ${nextShow.start.time}`}
-                      dateTime={nextShow.start.datetime}
-                    >
-                      {isToday(new Date(nextShow.start.datetime)) ? (
-                        <>today</>
-                      ) : (
-                        new Date(
-                          nextShow.start.datetime ||
-                            setHours(new Date(nextShow.start.date), 16) ||
-                            "",
-                        ).toLocaleDateString("da")
-                      )}
-                    </time>
-                  </a>
-                  <a
-                    className="text-3xl leading-none"
-                    target="_blank"
-                    href={
-                      nextShow.venue?.website ||
-                      `https://maps.google.com/maps?q=${
-                        (nextShow.venue && nextShow.venue.displayName) ||
-                        nextShow.location.city
-                      }`
-                    }
+      {nextShowsWithTicketLink.length ? (
+        <center
+          className="text-3xl my-[4vh] flex-col flex gap-8"
+          style={{
+            textShadow:
+              "0 0 2.5vh rgba(0, 0, 0, 1), 0 0 2.5vw rgba(0, 0, 0, 1)",
+          }}
+        >
+          {nextShowsWithTicketLink.map(([nextShow, ticketLink]) =>
+            nextShow ? (
+              <div key={nextShow.id} className="flex flex-col">
+                <a target="_blank" href={nextShow.uri} className="text-6xl">
+                  <time
+                    title={`${nextShow.start.date}  ${nextShow.start.time}`}
+                    dateTime={nextShow.start.datetime}
                   >
+                    {isToday(new Date(nextShow.start.datetime)) ? (
+                      <>today</>
+                    ) : (
+                      new Date(
+                        nextShow.start.datetime ||
+                          setHours(new Date(nextShow.start.date), 16) ||
+                          "",
+                      ).toLocaleDateString("da")
+                    )}
+                  </time>
+                </a>
+                <a
+                  className="text-3xl leading-none"
+                  target="_blank"
+                  href={
+                    nextShow.venue?.website ||
+                    `https://maps.google.com/maps?q=${
+                      (nextShow.venue && nextShow.venue.displayName) ||
+                      nextShow.location.city
+                    }`
+                  }
+                >
+                  <span>
+                    {nextShow.series?.displayName ||
+                      (nextShow.venue.id && nextShow.venue.displayName) ||
+                      nextShow.location.city}
+                  </span>
+                  {(nextShow.series?.displayName ||
+                    (nextShow.venue.id && nextShow.venue.displayName)) &&
+                  !String(
+                    nextShow.series?.displayName ||
+                      (nextShow.venue.id && nextShow.venue.displayName),
+                  ).includes(nextShow.venue.city.displayName) ? (
+                    <>, {nextShow.venue.city.displayName}</>
+                  ) : null}
+                </a>
+                {nextShow.performance.length > 1 &&
+                nextShow.performance.some(
+                  (p) => p.displayName !== "Vulvatorious",
+                ) &&
+                !nextShow.series?.displayName.includes("Festival") ? (
+                  <div className="text-lg leading-none">
+                    with{" "}
                     <span>
-                      {nextShow.series?.displayName ||
-                        (nextShow.venue.id && nextShow.venue.displayName) ||
-                        nextShow.location.city}
+                      {nextShow.performance
+                        .filter((p) => p.displayName !== "Vulvatorious")
+                        .map((p, i, arr) => (
+                          <Fragment key={p.artist.id}>
+                            {i === arr.length - 1 && arr.length > 1 ? (
+                              <> and </>
+                            ) : i ? (
+                              <>, </>
+                            ) : null}
+                            <a target="_blank" href={p.artist.uri}>
+                              {p.displayName.replace(" (DK)", "")}
+                            </a>
+                          </Fragment>
+                        ))}
                     </span>
-                    {(nextShow.series?.displayName ||
-                      (nextShow.venue.id && nextShow.venue.displayName)) &&
-                    !String(
-                      nextShow.series?.displayName ||
-                        (nextShow.venue.id && nextShow.venue.displayName),
-                    ).includes(nextShow.venue.city.displayName) ? (
-                      <>, {nextShow.venue.city.displayName}</>
-                    ) : null}
+                  </div>
+                ) : null}
+                {ticketLink ? (
+                  <a
+                    target="_blank"
+                    className="leading-none"
+                    href={ticketLink}
+                    style={{ fontSize: "1.25em" }}
+                  >
+                    Get tickets
                   </a>
-                  {nextShow.performance.length > 1 &&
-                  nextShow.performance.some(
-                    (p) => p.displayName !== "Vulvatorious",
-                  ) &&
-                  !nextShow.series?.displayName.includes("Festival") ? (
-                    <div className="text-lg leading-none">
-                      with{" "}
-                      <span>
-                        {nextShow.performance
-                          .filter((p) => p.displayName !== "Vulvatorious")
-                          .map((p, i, arr) => (
-                            <Fragment key={p.artist.id}>
-                              {i === arr.length - 1 && arr.length > 1 ? (
-                                <> and </>
-                              ) : i ? (
-                                <>, </>
-                              ) : null}
-                              <a target="_blank" href={p.artist.uri}>
-                                {p.displayName.replace(" (DK)", "")}
-                              </a>
-                            </Fragment>
-                          ))}
-                      </span>
-                    </div>
-                  ) : null}
-                  {ticketLink ? (
-                    <a
-                      target="_blank"
-                      className="leading-none"
-                      href={ticketLink}
-                      style={{ fontSize: "1.25em" }}
-                    >
-                      Get tickets
-                    </a>
-                  ) : null}
-                </div>
-              ) : null,
-            )
-          : null}
-      </center>
+                ) : null}
+              </div>
+            ) : null,
+          )}
+        </center>
+      ) : null}
     </div>
   );
 }
