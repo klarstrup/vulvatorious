@@ -5,6 +5,8 @@ import vulvaVLogo from "../public/vulvatorious_v_logo.png";
 import { Songkick } from "./songkick";
 
 export default async function Home() {
+  "use cache";
+
   const nextShowsList: Songkick.Event[] | undefined = await fetch(
     `https://api.songkick.com/api/3.0/artists/10189431-vulvatorious/calendar.json?apikey=${process.env.SONGKICK_APIKEY}`,
     { next: { revalidate: 12000 } },
